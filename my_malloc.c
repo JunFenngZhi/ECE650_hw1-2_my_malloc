@@ -1,7 +1,5 @@
 #include "my_malloc.h"
 
-#define SPILT_THRESHOLD 8
-
 void *makeNewBlock(const size_t size);
 void *unFreeOldBlock(metaInfo *ptr_m, const size_t size);
 void insList(metaInfo *ptr_m);
@@ -37,8 +35,7 @@ void *ff_malloc(size_t size)
 
 void ff_free(void *ptr)
 {
-  if (ptr == NULL)
-    return;
+  assert(ptr!=NULL);
 
   metaInfo *ptr_m = ptr - sizeof(metaInfo);
   insList(ptr_m);
@@ -151,7 +148,8 @@ void *makeNewBlock(const size_t size)
 
 void *unFreeOldBlock(metaInfo *ptr_m, const size_t size)
 {
-  if (ptr_m->size > size + sizeof(metaInfo) + SPILT_THRESHOLD)
+  //printf("ptr_m->size:%lu, size:%lu, sizeof(metaInfo):%lu \n", ptr_m->size,size,sizeof(metaInfo));
+  if (ptr_m->size > size + sizeof(metaInfo))
   { // remain and spilt
     void *remain_node = (void *)ptr_m + sizeof(metaInfo) + size;
 
@@ -164,7 +162,7 @@ void *unFreeOldBlock(metaInfo *ptr_m, const size_t size)
       ptr_m->prev->next = ptr_remain;
     if (ptr_m->next != NULL)
       ptr_m->next->prev = ptr_remain;
-    if (freeList == ptr_m) //only one element in list
+    if (freeList == ptr_m) 
       freeList = ptr_remain;
   }
   else
@@ -185,7 +183,7 @@ void *unFreeOldBlock(metaInfo *ptr_m, const size_t size)
     }
     else
     { //only one element in list
-      freeList == NULL;
+      freeList = NULL;
     }
   }
 
@@ -219,7 +217,7 @@ void printLinkedList()
   int len = 0;
   for (metaInfo *ptr = freeList; ptr != NULL; ptr = ptr->next)
   {
-    printf("node: size(%zu),  prev(%p), cur_address(%lu), next(%lu)\n", ptr->size, ptr->prev, ptr, ptr->next);
+    printf("node: size(%zu),  prev(%p), cur_address(%p), next(%p)\n", ptr->size, ptr->prev, ptr, ptr->next);
     len++;
   }
   printf("the length of list is (%d)\n", len);
