@@ -1,5 +1,5 @@
 
 TODO :
-1、malloc size=0没有检查判断
+1、malloc size=0没有检查判断√
 2、double free 怎么处理
-3、no lock version中，thread 1 free了的block, thread 2 无法使用
+3、no lock version中，thread 1 free了的block, thread 2 无法使用。 对block的利用率下降。
