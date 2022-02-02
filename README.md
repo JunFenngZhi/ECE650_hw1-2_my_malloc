@@ -1,4 +1,4 @@
 # my_malloc
 project in ece650
 
-for test
+this is a thread-safe version of malloc/free.
