@@ -12,8 +12,8 @@
 #define FREE(p)    ts_free_nolock(p)
 #endif
 
-#define NUM_THREADS  4
-#define NUM_ITEMS    10000
+#define NUM_THREADS  2
+#define NUM_ITEMS    10
 
 pthread_t threads[NUM_THREADS];
 int       thread_id[NUM_THREADS];

@@ -13,7 +13,7 @@
 #endif
 
 #define NUM_THREADS  4
-#define NUM_ITEMS    10000
+#define NUM_ITEMS    50
 
 pthread_t threads[NUM_THREADS];
 int       thread_id[NUM_THREADS];
@@ -40,17 +40,18 @@ void do_allocate(int thread_id) {
   pthread_barrier_wait(&barrier); 
 
   for (i=0; i < NUM_ITEMS; i++) {
+    //printf("thread:%d malloc\n", thread_id);
     index = i + thread_start_index;
     malloc_items[index].address = (int *)MALLOC(malloc_items[index].bytes);
     malloc_items[index].free = 0;
 
     if ((i % 10) == 0) { //Occasionally free some items
+      //printf("thread:%d free\n", thread_id);
       FREE(malloc_items[counter].address);
       malloc_items[counter].free = 1;
       counter++;
     } //if
   } //for i
-
   pthread_barrier_wait(&barrier);
 }
 

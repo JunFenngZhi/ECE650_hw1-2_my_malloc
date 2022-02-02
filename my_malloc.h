@@ -4,14 +4,17 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <assert.h>
+#include <pthread.h>
 
-//first fit malloc() and free()
-void * ff_malloc(size_t size);
-void ff_free(void * ptr);
 
-//best fit malloc() and free()
-void * bf_malloc(size_t size);
-void bf_free(void * ptr);
+
+//Thread Safe malloc/free: locking version 
+void *ts_malloc_lock(size_t size); 
+void ts_free_lock(void *ptr);
+
+//Thread Safe malloc/free: non-locking version 
+void *ts_malloc_nolock(size_t size); 
+void ts_free_nolock(void *ptr);
 
 typedef struct metaInfo_t {
   size_t size;
@@ -19,14 +22,6 @@ typedef struct metaInfo_t {
   struct metaInfo_t * next;
 }metaInfo;
 
-//test function
-unsigned long get_data_segment_size(); //in bytes
-unsigned long get_data_segment_free_space_size(); //in bytes
-
-//Debug Funtion
-void printLinkedList();
-int cycleDetect();
-void getListLength();
 
 
 #endif
